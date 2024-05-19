@@ -1,4 +1,4 @@
-## Issue
+## #1 Issue
 > Sometimes the DNS server does not work as intended and we are unable to connect to the Mongo DB on the wifi router although we can connect to the mongo DB using hotspot or other network without issues. 
 
 ### Error: 
@@ -46,3 +46,12 @@ Then we need to change the IPv4 DNS settings from the control panel.
       - Alternate: 208.67.220.220
 - Click OK on all open windows to save the changes.
 - Retry connecting to the MongoDB server from code/compass.
+----
+
+## #2 Issue 
+
+> - If we want to update the `collection` in MongoDB when we send any requests to the backend API then we need to pass the collection name in the MongoDB connection string. 
+> - But the default string provided by MongoDB does not work if we append the `collection` name. 
+> - So we can use the below string with the collection name "mern-blog" appended as shown.
+
+MONGO = "mongodb+srv://nirbhay:nirbhay@mern-blog.wc7mhrf.mongodb.net/mern-blog"
