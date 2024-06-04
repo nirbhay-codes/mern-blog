@@ -6,6 +6,7 @@ Install below packages in the `client` dir :
 - react-icons
 - react-redux
 - @reduxjs/toolkit
+- redux-persist
 
 Install below packages in the `api` dir :
 
