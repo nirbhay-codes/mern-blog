@@ -4,9 +4,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   signInStart,
-  signInSucess,
+  signInSuccess,
   signInFailure,
 } from '../redux/user/userSlice'
+import OAuth from '../components/OAuth'
 
 function SignIn() {
   const [formData, setFormData] = useState({})
@@ -96,6 +97,7 @@ function SignIn() {
                 'Sign In'
               )}
             </Button>
+            <OAuth />
           </form>
           {/* Note: the <div className='flex-1'> parent container causes the below div to be moved below the form even though the flex-direction is row. Reason being the flex-1 property sets the flex-grow: 1 which causes items to move to the next line*/}
           <div className='flex gap-2 text-sm mt-5'>
