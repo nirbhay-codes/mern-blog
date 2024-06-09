@@ -15,3 +15,4 @@ Install below packages in the `api` dir :
 - mongoose
 - dotenv
 - jsonwebtoken
+- cookie-parser
