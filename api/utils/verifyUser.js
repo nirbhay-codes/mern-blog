@@ -10,6 +10,7 @@ export const verifyToken = (req, res, next) => {
     if (err) {
       return next(errorHandler(401, 'Unauthorized'))
     }
+    // For e.g. 'user' object sample -> user { id: '663f695396f3e6677d1fa94f', iat: 1718021393 }
     req.user = user
     next()
   })

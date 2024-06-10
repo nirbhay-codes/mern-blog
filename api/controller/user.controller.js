@@ -29,6 +29,19 @@ export const updateUser = async (req, res, next) => {
   }
 }
 
+export const deleteUser = async (req, res, next) => {
+  // Sample: req.user { id: '6666e4391a044a3e15bc7135', iat: 1718022856 }
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(403, 'You are not allowed to delete this user'))
+  }
+  try {
+    await User.findByIdAndDelete(req.params.userId)
+    res.status(200).json('User has been deleted')
+  } catch (error) {
+    next(error)
+  }
+}
+
 // Separate function for database update logic
 async function updateUserInDatabase(userId, updatedUserData) {
   // Hash password if provided
@@ -47,6 +60,7 @@ async function updateUserInDatabase(userId, updatedUserData) {
 
 // Separate validation functions
 function isValidUser(req) {
+  console.log('req.user', req.user)
   if (req.user.id !== req.params.userId) {
     console.log('req.user.id', req.user.id)
     console.log('req.params.userId', req.params.userId)
