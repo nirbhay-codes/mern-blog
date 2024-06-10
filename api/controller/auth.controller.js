@@ -54,7 +54,7 @@ export const signin = async (req, res, next) => {
     }
 
     const token = jwt.sign(
-      { id: validUser._id },
+      { id: validUser._id, isAdmin: validUser.isAdmin },
       process.env.JWT_SECRET
     )
 
@@ -74,7 +74,10 @@ export const google = async (req, res, next) => {
     if (user) {
       // sign-in with the google account info
       // !Note: No need to verify the password match as it is already authenticated by Google OAuth
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+      const token = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.JWT_SECRET
+      )
       const { password, ...rest } = user._doc
       res
         .status(200)
@@ -99,7 +102,10 @@ export const google = async (req, res, next) => {
 
       await newUser.save()
 
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
+      const token = jwt.sign(
+        { id: newUser._id, isAdmin: newUser.isAdmin },
+        process.env.JWT_SECRET
+      )
       const { password, ...rest } = newUser._doc
 
       res
