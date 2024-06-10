@@ -8,6 +8,7 @@ Install below packages in the `client` dir :
 - @reduxjs/toolkit
 - redux-persist
 - react-circular-progressbar
+- react-quill
 
 Install below packages in the `api` dir :
 
