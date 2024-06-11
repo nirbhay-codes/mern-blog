@@ -62,8 +62,6 @@ async function updateUserInDatabase(userId, updatedUserData) {
 function isValidUser(req) {
   console.log('req.user', req.user)
   if (req.user.id !== req.params.userId) {
-    console.log('req.user.id', req.user.id)
-    console.log('req.params.userId', req.params.userId)
     return 'You are not allowed to update this user'
   }
   return null // No error if authorized
