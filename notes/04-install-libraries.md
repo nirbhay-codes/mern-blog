@@ -9,6 +9,7 @@ Install below packages in the `client` dir :
 - redux-persist
 - react-circular-progressbar
 - react-quill
+- tailwind-scrollbar
 
 Install below packages in the `api` dir :
 
