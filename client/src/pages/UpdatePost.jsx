@@ -1,112 +1,139 @@
-import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
-} from 'firebase/storage';
-import { app } from '../firebase';
-import { useEffect, useState } from 'react';
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+} from 'firebase/storage'
+import { app } from '../firebase'
+import { useEffect, useState } from 'react'
+import { CircularProgressbar } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 export default function UpdatePost() {
-  const [file, setFile] = useState(null);
-  const [imageUploadProgress, setImageUploadProgress] = useState(null);
-  const [imageUploadError, setImageUploadError] = useState(null);
-  const [formData, setFormData] = useState({});
-  const [publishError, setPublishError] = useState(null);
-  const { postId } = useParams();
+  const [file, setFile] = useState(null)
+  const [imageUploadProgress, setImageUploadProgress] = useState(null)
+  const [imageUploadError, setImageUploadError] = useState(null)
+  // const [formData, setFormData] = useState({});
+  // !Its a good practice to always have default values set to formData otherwise it can be undefined/null as React can batch updates to improve performance.
+  const [formData, setFormData] = useState({
+    title: '',
+    category: '',
+    image: '',
+    content: '',
+    _id: '',
+  })
+  const [publishError, setPublishError] = useState(null)
+  const { postId } = useParams()
 
-  const navigate = useNavigate();
-    const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate()
+  const { currentUser } = useSelector((state) => state.user)
 
   useEffect(() => {
-    try {
-      const fetchPost = async () => {
-        const res = await fetch(`/api/post/getposts?postId=${postId}`);
-        const data = await res.json();
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(`/api/post/getposts?postId=${postId}`)
+        const data = await res.json()
         if (!res.ok) {
-          console.log(data.message);
-          setPublishError(data.message);
-          return;
+          console.log(data.message)
+          setPublishError(data.message)
+          return
         }
         if (res.ok) {
-          setPublishError(null);
-          setFormData(data.posts[0]);
+          setPublishError(null)
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            ...data.posts[0],
+          }))
         }
-      };
-
-      fetchPost();
-    } catch (error) {
-      console.log(error.message);
+      } catch (error) {
+        console.log(error.message)
+      }
     }
-  }, [postId]);
 
-  const handleUpdloadImage = async () => {
+    fetchPost()
+  }, [postId])
+
+  const handleUploadImage = async () => {
     try {
       if (!file) {
-        setImageUploadError('Please select an image');
-        return;
+        setImageUploadError('Please select an image')
+        return
       }
-      setImageUploadError(null);
-      const storage = getStorage(app);
-      const fileName = new Date().getTime() + '-' + file.name;
-      const storageRef = ref(storage, fileName);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      setImageUploadError(null)
+      const storage = getStorage(app)
+      const fileName = new Date().getTime() + '-' + file.name
+      const storageRef = ref(storage, fileName)
+      const uploadTask = uploadBytesResumable(storageRef, file)
       uploadTask.on(
         'state_changed',
         (snapshot) => {
           const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setImageUploadProgress(progress.toFixed(0));
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          setImageUploadProgress(progress.toFixed(0))
         },
         (error) => {
-          setImageUploadError('Image upload failed');
-          setImageUploadProgress(null);
+          setImageUploadError('Image upload failed')
+          setImageUploadProgress(null)
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImageUploadProgress(null);
-            setImageUploadError(null);
-            setFormData({ ...formData, image: downloadURL });
-          });
+            setImageUploadProgress(null)
+            setImageUploadError(null)
+            // setFormData({ ...formData, image: downloadURL });
+            // !Below functional form of setFormData is preferred to always use the latest form data
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              image: downloadURL,
+            }))
+          })
         }
-      );
+      )
     } catch (error) {
-      setImageUploadError('Image upload failed');
-      setImageUploadProgress(null);
-      console.log(error);
+      setImageUploadError('Image upload failed')
+      setImageUploadProgress(null)
+      console.log(error)
     }
-  };
+  }
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const res = await fetch(`/api/post/updatepost/${formData._id}/${currentUser._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
+      if (!formData._id) {
+        setPublishError('Post ID is missing')
+        return
+      }
+
+      const res = await fetch(
+        `/api/post/updatepost/${formData._id}/${currentUser._id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }
+      )
+
+      const data = await res.json()
       if (!res.ok) {
-        setPublishError(data.message);
-        return;
+        setPublishError(data.message)
+        return
       }
 
       if (res.ok) {
-        setPublishError(null);
-        navigate(`/post/${data.slug}`);
+        setPublishError(null)
+        navigate(`/post/${data.slug}`)
       }
     } catch (error) {
-      setPublishError('Something went wrong');
+      setPublishError('Something went wrong')
     }
-  };
+  }
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Update post</h1>
@@ -119,15 +146,23 @@ export default function UpdatePost() {
             id='title'
             className='flex-1'
             onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
+              // setFormData({ ...formData, title: e.target.value })
+              setFormData((prevFormData) => ({
+                ...prevFormData,
+                title: e.target.value,
+              }))
             }
-            value={formData.title}
+            value={formData.title || ''}
           />
           <Select
             onChange={(e) =>
-              setFormData({ ...formData, category: e.target.value })
+              // setFormData({ ...formData, category: e.target.value })
+              setFormData((prevFormData) => ({
+                ...prevFormData,
+                category: e.target.value,
+              }))
             }
-            value={formData.category}
+            value={formData.category || 'uncategorized'}
           >
             <option value='uncategorized'>Select a category</option>
             <option value='javascript'>JavaScript</option>
@@ -146,7 +181,7 @@ export default function UpdatePost() {
             gradientDuoTone='purpleToBlue'
             size='sm'
             outline
-            onClick={handleUpdloadImage}
+            onClick={handleUploadImage}
             disabled={imageUploadProgress}
           >
             {imageUploadProgress ? (
@@ -176,7 +211,11 @@ export default function UpdatePost() {
           className='h-72 mb-12'
           required
           onChange={(value) => {
-            setFormData({ ...formData, content: value });
+            // setFormData({ ...formData, content: value });
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              content: value,
+            }))
           }}
         />
         <Button type='submit' gradientDuoTone='purpleToPink'>
@@ -189,5 +228,5 @@ export default function UpdatePost() {
         )}
       </form>
     </div>
-  );
+  )
 }
