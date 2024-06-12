@@ -8,7 +8,9 @@ export const test = (req, res) => {
 
 export const deleteUser = async (req, res, next) => {
   // Sample: req.user { id: '6666e4391a044a3e15bc7135', iat: 1718022856 }
-  if (req.user.id !== req.params.userId) {
+  // !Below logic says that if it is NOT an admin then req.user.id should match req.params.userId, else error.
+  // !This means an admin should be allowed to delete any user even if the ID does not match.
+  if (!req.user.isAdmin && req.user.id !== req.params.userId) {
     return next(errorHandler(403, 'You are not allowed to delete this user'))
   }
   try {
