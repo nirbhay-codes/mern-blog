@@ -10,6 +10,8 @@ Install below packages in the `client` dir :
 - react-circular-progressbar
 - react-quill
 - tailwind-scrollbar
+- moment
+- @tailwindcss/line-clamp
 
 Install below packages in the `api` dir :
 
