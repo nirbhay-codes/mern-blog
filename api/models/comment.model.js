@@ -14,6 +14,7 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // Below stores all the userIds that like the comment
     likes: {
       type: Array,
       default: [],
