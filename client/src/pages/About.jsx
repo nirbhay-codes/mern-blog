@@ -6,7 +6,7 @@ export default function About() {
           <h1 className='text-3xl font-semibold text-center my-7'>
             About My Blog
           </h1>
-          <div className='text-md text-gray-300 flex flex-col gap-6'>
+          <div className='text-md text-gray-500 flex flex-col gap-6'>
             <p className='mb-4'>
               Welcome to my blog! I created this space as a personal project to
               share my insights and ideas with the world. As a passionate
