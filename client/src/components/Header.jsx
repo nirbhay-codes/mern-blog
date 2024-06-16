@@ -72,7 +72,12 @@ export default function Header() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
-      <Button className='w-12 h-10 lg:hidden' color='gray' pill>
+      <Button
+        className='w-12 h-10 lg:hidden'
+        color='gray'
+        pill
+        onClick={() => navigate('/search')}
+      >
         <AiOutlineSearch />
       </Button>
       {/* The md:order-2 ensures that on screens bigger than medium size, the FaMoon icon and the "Sign In" button are placed at the end after the individual Link items in Navbar */}
@@ -122,15 +127,19 @@ export default function Header() {
       {/* Navbar.Toggle component internally handles the screen size and is only visible on medium screen sizes and below */}
       {/* The below group contains Links which are part of the Navbar. In screen sizes bigger than mobile, these Link items are shown outside on the Navbar */}
       <Navbar.Collapse>
-        <Navbar.Link active={path == '/'} as={'div'}>
-          <Link to='/'>Home</Link>
-        </Navbar.Link>
-        <Navbar.Link active={path == '/about'} as={'div'}>
-          <Link to='/about'>About</Link>
-        </Navbar.Link>
-        <Navbar.Link active={path == '/projects'} as={'div'}>
-          <Link to='/projects'>Projects</Link>
-        </Navbar.Link>
+        <Link to='/'>
+          <Navbar.Link active={path == '/'} as={'div'}>
+            Home
+          </Navbar.Link>
+        </Link>
+        <Link to='/about'>
+          <Navbar.Link active={path == '/about'} as={'div'}>
+            About
+          </Navbar.Link>
+        </Link>
+        <Link to='/projects'>
+          <Navbar.Link active={path == '/projects'}>Projects</Navbar.Link>
+        </Link>
       </Navbar.Collapse>
     </Navbar>
   )

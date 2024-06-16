@@ -1,25 +1,23 @@
 export default function About() {
   return (
-    <div className='min-h-screen flex items-center justify-center'>
+    <div className='min-h-screen mt-36 flex justify-center'>
       <div className='max-w-5xl mx-auto p-3 text-center'>
         <div>
           <h1 className='text-3xl font-semibold text-center my-7'>
             About My Blog
           </h1>
-          <div className='text-md text-gray-500 flex flex-col gap-6'>
+          <div className='text-md text-left flex flex-col gap-6'>
             <p className='mb-4'>
               Welcome to my blog! I created this space as a personal project to
               share my insights and ideas with the world. As a passionate
               developer, I love to explore and write about technology, coding,
               and everything in between.
             </p>
-
             <p className='mb-4'>
               Here, you'll find a variety of articles and tutorials on topics
               like web development, software engineering, and programming
               languages.
             </p>
-
             <p className='underline font-semibold'>
               My blog offers several features to enhance your experience:
             </p>
@@ -33,8 +31,8 @@ export default function About() {
                 foster discussions.
               </li>
               <li className='mb-2'>
-                <strong>Coming Soon:</strong> Stay updated with the latest posts
-                through my subscription service.
+                <strong className='text-pink-500'>Coming Soon:</strong> Stay
+                updated with the latest posts through my subscription service.
               </li>
               <li className='mb-2'>
                 Use the powerful <strong>search</strong> functionality to find
