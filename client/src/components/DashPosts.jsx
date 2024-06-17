@@ -145,6 +145,17 @@ export default function DashPosts() {
       ) : (
         <p>You have no posts yet!</p>
       )}
+      {currentUser.isAdmin && (
+          <Link to={'/create-post'}>
+            <Button
+              type='button'
+              gradientDuoTone='purpleToPink'
+              className='w-full mt-10'
+            >
+              Create a post
+            </Button>
+          </Link>
+        )}
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}

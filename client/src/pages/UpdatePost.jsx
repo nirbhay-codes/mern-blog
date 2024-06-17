@@ -13,6 +13,7 @@ import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import CustomToolbar, {modules, formats} from '../components/CustomToolbar'
 
 export default function UpdatePost() {
   const [file, setFile] = useState(null)
@@ -204,6 +205,7 @@ export default function UpdatePost() {
             className='w-full h-72 object-cover'
           />
         )}
+        <CustomToolbar />
         <ReactQuill
           theme='snow'
           value={formData.content}
@@ -211,12 +213,13 @@ export default function UpdatePost() {
           className='h-72 mb-12'
           required
           onChange={(value) => {
-            // setFormData({ ...formData, content: value });
             setFormData((prevFormData) => ({
               ...prevFormData,
               content: value,
             }))
           }}
+          modules={modules}
+          formats={formats}
         />
         <Button type='submit' gradientDuoTone='purpleToPink'>
           Update post

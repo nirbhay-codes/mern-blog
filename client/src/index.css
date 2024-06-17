@@ -1,43 +1,122 @@
+/* Import Montserrat font from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* Base styles and Tailwind components/utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Global styles */
 body {
-    height: 100vh;
-}
-  
-.ql-editor {
-    font-size: 1.05rem;
+  height: 100vh;
+  font-family: 'Montserrat', sans-serif; /* Use Montserrat font for entire body */
 }
 
-.post-content p {
-    margin-bottom: 0.5rem;
+/* Specific element styles */
+.ql-editor {
+  font-size: 1rem; /* Adjust font-size as needed */
+}
+
+.post-content {
+  /* Inherit styles from body for Montserrat font */
+
+  h1 {
+    @apply text-3xl font-bold mb-6; /* Use Tailwind classes */
   }
-  
-  .post-content h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    font-family: sans-serif;
-    margin: 1.5rem 0;
+
+  h2 {
+    @apply text-2xl font-medium mb-6;
   }
-  
-  .post-content h2 {
-    font-size: 1.4rem;
-    font-family: sans-serif;
-    margin: 1.5rem 0;
+
+  h3 {
+    @apply text-xl font-bold mb-6; /* Use Tailwind classes */
   }
-  
-  .post-content a {
-    color: rgb(73, 149, 199);
-    text-decoration: none;
+
+  p {
+    @apply mb-4;
   }
-  
-  .post-content a:hover {
+
+  a {
+    color: blue;
+  }
+
+  a:hover {
     text-decoration: underline;
   }
-  
-  .dark .post-content a {
+
+  /* Code block styles */
+pre {
+  @apply bg-gray-100 p-3 rounded overflow-auto;
+  font-family: monospace; /* Use a monospace font for code */
+
+  /* Dark mode styles */
+  .dark & {
+    @apply bg-gray-800 text-white; /* Change background and text color */
+  }
+}
+
+/* Blockquote styles */
+blockquote {
+  @apply px-4 py-3 border-l-4 shadow-lg border-gray-300 rounded-md mt-4 mb-4;
+  font-style: italic; /* Add italics for blockquotes */
+  font-size: 1.1rem; /* Slightly larger font size for emphasis */
+
+  /* Dark mode styles */
+  .dark & {
+    border-color: rgb(31,41,55, 1); /* Adjust border color for dark mode */
+  }
+}
+
+}
+
+/* Styles for ordered and unordered lists */
+.post-content ol,
+.post-content ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+
+  /* Dark mode styles */
+  .dark & {
+    color: rgb(255, 255, 255); /* Adjust list item text color for dark mode */
+  }
+}
+
+.post-content ol li {
+  list-style-type: decimal;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.post-content ul li {
+  list-style-type: disc;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.post-content ol li::marker,
+.post-content ul li::marker {
+  color: rgb(0, 0, 0); /* Customize the marker color */
+
+  .dark & {
+    color: rgb(255, 255, 255); /* Adjust list item text color for dark mode */
+  }
+}
+
+.dark .post-content ol li::marker,
+.post-content ul li::marker {
+  color: rgb(255, 255, 255); /* Customize the marker color */
+}
+
+
+/* Dark mode (optional) */
+.dark .post-content {
+  a {
     color: red;
   }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}

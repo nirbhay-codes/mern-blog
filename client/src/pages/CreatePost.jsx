@@ -1,3 +1,6 @@
+import React, { useState } from 'react'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 import {
   getDownloadURL,
   getStorage,
@@ -5,13 +8,11 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage'
 import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react'
-import { useState } from 'react'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
 import { app } from '../firebase'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { useNavigate } from 'react-router-dom'
+import CustomToolbar, {modules, formats} from '../components/CustomToolbar'
 
 export default function CreatePost() {
   const [file, setFile] = useState(null)
@@ -147,6 +148,7 @@ export default function CreatePost() {
             className='w-full h-72 object-cover'
           />
         )}
+        <CustomToolbar />
         <ReactQuill
           theme='snow'
           placeholder='Write something...'
@@ -155,6 +157,8 @@ export default function CreatePost() {
           onChange={(value) => {
             setFormData({ ...formData, content: value })
           }}
+          modules={modules}
+          formats={formats}
         />
         <Button type='submit' gradientDuoTone='purpleToPink'>
           Publish
